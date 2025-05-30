@@ -3,10 +3,11 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { FaBrain, FaMicrophone, FaKeyboard, FaLightbulb, FaRobot } from "react-icons/fa";
 import type { Interview } from "@shared/schema";
+import { useDashboardData } from "@/pages/Dashboard";
 
 interface AIInterviewCoachProps {
   userId: number;
@@ -18,18 +19,7 @@ export function AIInterviewCoach({ userId }: AIInterviewCoachProps) {
   const [currentFeedback, setCurrentFeedback] = useState<any>(null);
   const queryClient = useQueryClient();
 
-  const { data: dashboardData } = useQuery({
-    queryKey: ["/api/dashboard", userId],
-    queryFn: async () => {
-      const response = await fetch(`/api/dashboard/${userId}`);
-      if (!response.ok) throw new Error('Failed to fetch dashboard data');
-      return response.json();
-    },
-    enabled: !!userId,
-    staleTime: 30000,
-    refetchInterval: false,
-  });
-
+  const dashboardData = useDashboardData();
   const activeInterview = dashboardData?.activeInterview;
 
   const startInterviewMutation = useMutation({
