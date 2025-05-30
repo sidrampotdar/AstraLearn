@@ -157,7 +157,7 @@ export function AIInterviewCoach({ userId }: AIInterviewCoachProps) {
               </>
             )}
 
-            {(showFeedback && currentFeedback) || activeInterview.aiFeedback ? (
+            {((showFeedback && currentFeedback) || activeInterview.aiFeedback) && (
               <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
                 <div className="flex items-start space-x-2">
                   <FaLightbulb className="text-blue-500 mt-1" />
