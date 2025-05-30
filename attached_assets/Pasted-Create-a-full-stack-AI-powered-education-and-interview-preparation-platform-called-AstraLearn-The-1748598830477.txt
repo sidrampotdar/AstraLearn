@@ -1,0 +1,60 @@
+Create a full-stack AI-powered education and interview preparation platform called "AstraLearn". The platform should include the following features and architecture:
+
+🔧 TECHNOLOGY STACK:
+- Frontend: React.js with TailwindCSS for responsive UI (dark/light mode, animations, mobile support)
+- Backend: Node.js with Express.js
+- Database: MongoDB (or Firebase Firestore if Replit DB is preferred)
+- AI APIs: Use OpenAI API (for GPT-based feedback and code evaluation), optional Whisper for voice input
+- Replit’s integrated IDE and hosting environment
+
+🌟 FEATURES TO INCLUDE:
+
+1. 🧠 Personalized Learning Dashboard:
+   - User login/signup (basic auth or Firebase)
+   - AI-curated question sets based on selected topics (DSA, system design, etc.)
+   - Resume feedback module (text upload → GPT feedback)
+
+2. 🤖 AI Interview Coach:
+   - Simulate mock interviews
+   - Record or type answers, get AI feedback on tone, clarity, relevance
+   - Use OpenAI GPT to evaluate responses in real-time
+
+3. 💻 Smart Code Editor:
+   - Live coding editor (Monaco or CodeMirror)
+   - AI suggestions, performance tips, and error fixes
+   - Auto-evaluation of code (correctness, structure, efficiency)
+
+4. 🧘 Stress-Free Mode:
+   - Pomodoro timer
+   - Embedded meditation music (via API or iframe from Calm/YouTube)
+   - Focus mode: Distraction blocker
+
+5. 📘 Real-Time TechBook:
+   - Dynamic notes that update based on user learning path
+   - Markdown editor + AI auto-summary of topics
+
+6. 🌐 Remote Coding Interview Room:
+   - Collaborative coding environment (basic version with shared code space)
+   - Interviewer view + candidate code + chat
+
+🧩 Additional Requirements:
+- Modular architecture (split by components, services, utils)
+- Use environment variables for all API keys
+- Design for scalability (support 10 to 10,000+ users)
+- Cloud-ready: deployable on Render or Vercel
+- Basic analytics: track time spent per feature/module
+
+📦 OPTIONAL MONETIZATION:
+- Freemium mode toggle (disable premium tools unless plan = 'pro')
+- Admin panel for managing institutions and licenses
+
+🎨 UI/UX:
+- Visually rich dashboard
+- Toggle for dark/light mode
+- Mobile-first responsive design
+
+⚙️ OUTPUT:
+- Full working project scaffold with stubbed AI integrations
+- Sample user flows: sign in → choose topic → learn → mock interview → code test
+- Suggestions for API keys and environment setup
+- Deploy instructions for Replit
