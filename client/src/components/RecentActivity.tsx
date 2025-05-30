@@ -29,9 +29,10 @@ export function RecentActivity({ activities }: RecentActivityProps) {
     }
   };
 
-  const formatTimeAgo = (date: Date) => {
+  const formatTimeAgo = (date: Date | string) => {
     const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+    const activityDate = typeof date === 'string' ? new Date(date) : date;
+    const diffInHours = Math.floor((now.getTime() - activityDate.getTime()) / (1000 * 60 * 60));
     
     if (diffInHours < 1) return "Just now";
     if (diffInHours === 1) return "1 hour ago";

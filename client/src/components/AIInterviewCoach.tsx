@@ -18,10 +18,19 @@ export function AIInterviewCoach({ userId }: AIInterviewCoachProps) {
   const [currentFeedback, setCurrentFeedback] = useState<any>(null);
   const queryClient = useQueryClient();
 
-  const { data: activeInterview } = useQuery({
+  const { data: dashboardData } = useQuery({
     queryKey: ["/api/dashboard", userId],
-    select: (data: any) => data.activeInterview as Interview | undefined,
+    queryFn: async () => {
+      const response = await fetch(`/api/dashboard/${userId}`);
+      if (!response.ok) throw new Error('Failed to fetch dashboard data');
+      return response.json();
+    },
+    enabled: !!userId,
+    staleTime: 30000,
+    refetchInterval: false,
   });
+
+  const activeInterview = dashboardData?.activeInterview;
 
   const startInterviewMutation = useMutation({
     mutationFn: async (topic: string) => {

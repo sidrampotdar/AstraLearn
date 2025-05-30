@@ -26,9 +26,9 @@ export function Sidebar() {
             
             return (
               <Link key={item.name} href={item.href}>
-                <a
+                <div
                   className={cn(
-                    "flex items-center space-x-3 p-3 rounded-lg transition-colors",
+                    "flex items-center space-x-3 p-3 rounded-lg transition-colors cursor-pointer",
                     isActive
                       ? "text-gray-700 dark:text-gray-200 bg-blue-50 dark:bg-blue-900/30 border-l-4 border-blue-500"
                       : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
@@ -36,7 +36,7 @@ export function Sidebar() {
                 >
                   <Icon className={cn("text-lg", item.color)} />
                   <span className={isActive ? "font-medium" : ""}>{item.name}</span>
-                </a>
+                </div>
               </Link>
             );
           })}

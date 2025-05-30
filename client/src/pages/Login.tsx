@@ -56,7 +56,7 @@ export default function Login() {
         title: "Success",
         description: "Welcome back to AstraLearn!"
       });
-      setLocation("/");
+      // Navigation will be handled by useEffect when user state updates
     } catch (error) {
       toast({
         title: "Login Failed",
@@ -95,7 +95,7 @@ export default function Login() {
         title: "Success",
         description: "Welcome to AstraLearn!"
       });
-      setLocation("/");
+      // Navigation will be handled by useEffect when user state updates
     } catch (error) {
       toast({
         title: "Registration Failed",

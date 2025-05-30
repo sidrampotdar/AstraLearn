@@ -11,7 +11,14 @@ import { StressFreeMode } from "@/components/StressFreeMode";
 import { QuickActions } from "@/components/QuickActions";
 import { RecentActivity } from "@/components/RecentActivity";
 import { useLocation } from "wouter";
-import { useEffect } from "react";
+import { useEffect, createContext, useContext } from "react";
+
+// Create context for dashboard data
+const DashboardContext = createContext<any>(null);
+
+export function useDashboardData() {
+  return useContext(DashboardContext);
+}
 
 export default function Dashboard() {
   const { user, isLoading } = useAuth();
@@ -24,8 +31,15 @@ export default function Dashboard() {
   }, [user, isLoading, setLocation]);
 
   const { data: dashboardData, isLoading: isDashboardLoading } = useQuery({
-    queryKey: ["/api/dashboard", user?.id],
+    queryKey: ["dashboard", user?.id],
+    queryFn: async () => {
+      const response = await fetch(`/api/dashboard/${user?.id}`);
+      if (!response.ok) throw new Error('Failed to fetch dashboard data');
+      return response.json();
+    },
     enabled: !!user?.id,
+    staleTime: 60000, // 1 minute
+    refetchInterval: false,
   });
 
   if (isLoading || isDashboardLoading) {
@@ -51,55 +65,57 @@ export default function Dashboard() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <Header />
-      
-      <div className="flex">
-        <Sidebar />
+    <DashboardContext.Provider value={dashboardData}>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+        <Header />
         
-        <main className="flex-1 p-6 overflow-y-auto">
-          {/* Welcome Section */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                  Welcome back, {user.firstName}! 👋
-                </h1>
-                <p className="text-gray-600 dark:text-gray-400 mt-1">
-                  Ready to continue your learning journey?
-                </p>
-              </div>
-              <div className="hidden sm:block">
-                <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-                  <span>📅</span>
-                  <span>Today, {currentDate}</span>
+        <div className="flex">
+          <Sidebar />
+          
+          <main className="flex-1 p-6 overflow-y-auto">
+            {/* Welcome Section */}
+            <div className="mb-8">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                    Welcome back, {user.firstName}! 👋
+                  </h1>
+                  <p className="text-gray-600 dark:text-gray-400 mt-1">
+                    Ready to continue your learning journey?
+                  </p>
+                </div>
+                <div className="hidden sm:block">
+                  <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
+                    <span>📅</span>
+                    <span>Today, {currentDate}</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Stats Cards */}
-          <StatsCards stats={dashboardData?.stats || null} />
+            {/* Stats Cards */}
+            <StatsCards stats={dashboardData?.stats || null} />
 
-          {/* Main Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Left Column - Primary Features */}
-            <div className="lg:col-span-2 space-y-6">
-              <AIInterviewCoach userId={user.id} />
-              <SmartCodeEditor userId={user.id} />
-              <ResumeFeedback userId={user.id} />
+            {/* Main Content Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Left Column - Primary Features */}
+              <div className="lg:col-span-2 space-y-6">
+                <AIInterviewCoach userId={user.id} />
+                <SmartCodeEditor userId={user.id} />
+                <ResumeFeedback userId={user.id} />
+              </div>
+
+              {/* Right Column - Secondary Features */}
+              <div className="space-y-6">
+                <LearningProgress topics={dashboardData?.learningTopics || []} />
+                <StressFreeMode />
+                <QuickActions />
+                <RecentActivity activities={dashboardData?.recentActivities || []} />
+              </div>
             </div>
-
-            {/* Right Column - Secondary Features */}
-            <div className="space-y-6">
-              <LearningProgress topics={dashboardData?.learningTopics || []} />
-              <StressFreeMode />
-              <QuickActions />
-              <RecentActivity activities={dashboardData?.recentActivities || []} />
-            </div>
-          </div>
-        </main>
+          </main>
+        </div>
       </div>
-    </div>
+    </DashboardContext.Provider>
   );
 }
